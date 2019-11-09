@@ -7,9 +7,7 @@ import GameCanvas from './components/game.js';
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <GameCanvas/>
-      </header>
+      <GameCanvas/>
     </div>
   );
 }

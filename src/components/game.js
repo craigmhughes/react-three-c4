@@ -30,11 +30,21 @@ const Controls = () =>{
     ref={orbitRef}/>);
 };
 
-const Thing = ({active, setActive, isMoving, setIsMoving})=>{
+const Board = ({active, setActive, isMoving, setIsMoving})=>{
   const ref = useRef();
   const props = useSpring({
     rotationY: active ? 3.15 : 0,
   });
+
+  // Width, Height, Depth
+  let dimensions =  [1.5, 1.5, 0.2]
+  let colNum = 7;
+
+  let colElements = [];
+
+  for(let i = 0; i < colNum; i++){
+    colElements.push(<BoardColumn key={i} id={i} dimensions={dimensions} cols={colNum}/>)
+  }
 
   useFrame(()=>{
     if((props.rotationY.value == 3.15 && isMoving) || (props.rotationY.value == 0 && isMoving)){
@@ -45,9 +55,29 @@ const Thing = ({active, setActive, isMoving, setIsMoving})=>{
   return (
     <a.mesh
       ref={ref}
-      rotation-y={props.rotationY}>
-      <boxGeometry attach="geometry" args={[1, 1, 0.25]} />
-      <a.meshPhysicalMaterial attach="material" color="blue"/>
+      rotation-y={props.rotationY}
+      position-x={0.05}>
+        <boxGeometry attach="geometry" args={dimensions} />
+        <a.meshPhysicalMaterial attach="material" color="red"/>
+        {colElements}
+    </a.mesh>
+  )
+}
+
+const BoardColumn = ({id, dimensions, cols})=>{
+  const ref = useRef();
+  // const props = useSpring({
+    
+  // });
+
+  return (
+    <a.mesh
+      ref={ref}
+      position-x={-dimensions[0]/2 + ((dimensions[0] / cols) + 0.02) * id }
+      position-z={0}>
+      
+      <boxGeometry attach="geometry" args={[(dimensions[0] / cols), dimensions[1], dimensions[2]]} />
+      <a.meshPhysicalMaterial attach="material" color="grey"/>
     </a.mesh>
   )
 }
@@ -73,13 +103,13 @@ function GameCanvas(){
   const [isMoving, setIsMoving] = useState(false);
 
   return(
-      <div>
+      <div id="game-root">
         <Canvas shadowMap>
           <Camera />
           {/* <Controls/> */}
           <ambientLight/>
           <spotLight position={[0,5,10]}/>
-          <Thing setActive={setActive} active={active} isMoving={isMoving} setIsMoving={setIsMoving}/>
+          <Board setActive={setActive} active={active} isMoving={isMoving} setIsMoving={setIsMoving}/>
         </Canvas>
         <PlaceButton setActive={setActive} active={active} isMoving={isMoving} setIsMoving={setIsMoving}/>
       </div>
