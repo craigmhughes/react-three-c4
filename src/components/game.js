@@ -30,7 +30,7 @@ const Controls = () =>{
     ref={orbitRef}/>);
 };
 
-const Board = ({active, setActive, isMoving, setIsMoving, counters, setCounter})=>{
+const Board = ({active, setActive, isMoving, setIsMoving, counters, setCounter, player, activeCol, setActiveCol})=>{
   const ref = useRef();
   const props = useSpring({
     rotationY: active ? 3.15 : 0,
@@ -41,13 +41,10 @@ const Board = ({active, setActive, isMoving, setIsMoving, counters, setCounter})
   let colNum = 7;
   let colElements = [];
 
-  // Set active column, start at -1 and none selected.
-  const [activeCol, setActiveCol] = useState(-1);
-
   for(let i = 0; i < colNum; i++){
     colElements.push(
     <BoardColumn  key={i} id={i} dimensions={dimensions} cols={colNum} activeCol={activeCol} setActiveCol={setActiveCol}
-                  counters={counters} setCounter={setCounter}/>)
+                  counters={counters} setCounter={setCounter} player={player}/>)
   }
 
   useFrame(()=>{
@@ -66,8 +63,9 @@ const Board = ({active, setActive, isMoving, setIsMoving, counters, setCounter})
   )
 }
 
-const BoardColumn = ({id, dimensions, cols, activeCol, setActiveCol, counters, setCounter})=>{
+const BoardColumn = ({id, dimensions, cols, activeCol, setActiveCol, counters, setCounter, player})=>{
   const ref = useRef();
+  let colId = id;
 
   // Array of Counter components.
   let counterElements = [];
@@ -76,9 +74,11 @@ const BoardColumn = ({id, dimensions, cols, activeCol, setActiveCol, counters, s
     color: activeCol === id ? "red" : "grey",
   });
 
+
   for(let i = 0; i < Math.floor(dimensions[1] / (dimensions[0] / cols)); i++){
+    // console.log(counters[colId][i]);
     counterElements.push(
-      <Counter  key={i} id={i} dimensions={dimensions} cols={cols} owner={Math.random() * 2}
+      <Counter  key={i} id={i} dimensions={dimensions} cols={cols} owner={counters[colId][i]}
                 isPlaced={counters[id][i] !== undefined}/>);
   }
 
@@ -88,7 +88,7 @@ const BoardColumn = ({id, dimensions, cols, activeCol, setActiveCol, counters, s
       position-x={-dimensions[0]/2 + ((dimensions[0] / cols) + 0.02) * id }
       onClick={()=>{
         setActiveCol(-1);
-        setCounter([id, 0]);
+        setCounter([id, player]);
         setActiveCol(id);
       }}>
       {counterElements}
@@ -101,8 +101,10 @@ const BoardColumn = ({id, dimensions, cols, activeCol, setActiveCol, counters, s
 const Counter = ({id, dimensions, cols, owner, isPlaced})=>{
   const ref = useRef();
   let size = (dimensions[0] / cols) * 0.5;
+  let color = owner > 0 ? "yellow" : "red";
+
   const props = useSpring({
-    color: "red",
+    counterColor: color,
     y: isPlaced ? -0.625 + (0.25 * id) : dimensions[1] + size,
     transparent: isPlaced ? 1 : 0,
   });
@@ -114,7 +116,7 @@ const Counter = ({id, dimensions, cols, owner, isPlaced})=>{
       position-y={props.y}>
       
       <cylinderGeometry attach="geometry" args={[size,size,size,10]} />
-      <a.meshPhysicalMaterial attach="material" color={props.color} opacity={props.transparent}/>
+      <a.meshPhysicalMaterial attach="material" color={props.counterColor} opacity={props.transparent}/>
     </a.mesh>
   )
 }
@@ -144,8 +146,8 @@ const GameCanvas = ()=>{
   // Prevent clicking to place if Board is moving
   const [isMoving, setIsMoving] = useState(false);
 
-  // Get & Set active player. true = Player One
-  const [player, setPlayer] = useState(false);
+  // Get & Set active player. 1 = Player One, -1 = Player Two
+  const [player, setPlayer] = useState(1);
   
   // Counters in Columns. 
   const [counters, setCounters] = useState([
@@ -153,7 +155,10 @@ const GameCanvas = ()=>{
   ]);
 
   // Counter to be placed on board. [0] = column index, [1] = owner
-  const [activeCounter, setActiveCounter] = useState([0,0]);
+  const [activeCounter, setActiveCounter] = useState([0,player]);
+
+  // Set active column, start at -1 and none selected.
+  const [activeCol, setActiveCol] = useState(0);
 
   
 
@@ -162,6 +167,8 @@ const GameCanvas = ()=>{
    */
   function placeCounter(){
     counters[activeCounter[0]][counters[activeCounter[0]].length] = activeCounter[1];
+    setPlayer(player * -1);
+    setActiveCounter([activeCol, player * -1]);
   }
 
   return(
@@ -172,11 +179,11 @@ const GameCanvas = ()=>{
           <ambientLight/>
           <spotLight position={[0,5,10]}/>
           <Board  setActive={setActive} active={active} isMoving={isMoving} setIsMoving={setIsMoving} counters={counters}
-                  setCounter={setActiveCounter}/>
+                  setCounter={setActiveCounter} player={player} activeCol={activeCol} setActiveCol={setActiveCol}/>
           {/* <Controls/> */}
         </Canvas>
-        <PlaceButton  setActive={setActive} active={active} isMoving={isMoving} setIsMoving={setIsMoving}
-                      placeCounter={placeCounter}/>
+        <PlaceButton  setActive={setActive} active={active} isMoving={isMoving} setIsMoving={setIsMoving} setActiveCol={setActiveCol}
+                      placeCounter={placeCounter} setPlayer={setPlayer} player={player} activeCol={activeCol} setActiveCounter={setActiveCounter}/>
       </div>
   )
 }
