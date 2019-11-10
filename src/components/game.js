@@ -68,7 +68,6 @@ const Board = ({active, setActive, isMoving, setIsMoving, counters, setCounter})
 
 const BoardColumn = ({id, dimensions, cols, activeCol, setActiveCol, counters, setCounter})=>{
   const ref = useRef();
-  let placedCounters = 0;
 
   // Array of Counter components.
   let counterElements = [];
@@ -89,7 +88,7 @@ const BoardColumn = ({id, dimensions, cols, activeCol, setActiveCol, counters, s
       position-x={-dimensions[0]/2 + ((dimensions[0] / cols) + 0.02) * id }
       onClick={()=>{
         setActiveCol(-1);
-        setCounter(id, "one");
+        setCounter([id, 0]);
         setActiveCol(id);
       }}>
       {counterElements}
@@ -120,7 +119,7 @@ const Counter = ({id, dimensions, cols, owner, isPlaced})=>{
   )
 }
 
-const PlaceButton = ({setActive, active, setIsMoving, isMoving})=>{
+const PlaceButton = ({setActive, active, setIsMoving, isMoving, placeCounter})=>{
 
   function handleClick(e){
     e.preventDefault();
@@ -128,6 +127,7 @@ const PlaceButton = ({setActive, active, setIsMoving, isMoving})=>{
     if(isMoving == false){
       setActive(!active);
       setIsMoving(true);
+      placeCounter();
     }
   }
 
@@ -149,19 +149,19 @@ const GameCanvas = ()=>{
   
   // Counters in Columns. 
   const [counters, setCounters] = useState([
-    ["one"],[],[],[],[],[],[]
+    [],[],[],[],[],[],[]
   ]);
 
+  // Counter to be placed on board. [0] = column index, [1] = owner
+  const [activeCounter, setActiveCounter] = useState([0,0]);
+
+  
+
   /**
-   * Add to counters array.
-   * @param {*} i = column index
-   * @param {*} owner = player
+   * Confirm placement of counter & overwrite var.
    */
-  function setCounter(i, owner){
-    let newCounters = counters;
-    newCounters[i][newCounters[i].length] = owner;
-    setCounters(newCounters);
-    console.log("set");
+  function placeCounter(){
+    counters[activeCounter[0]][counters[activeCounter[0]].length] = activeCounter[1];
   }
 
   return(
@@ -172,10 +172,11 @@ const GameCanvas = ()=>{
           <ambientLight/>
           <spotLight position={[0,5,10]}/>
           <Board  setActive={setActive} active={active} isMoving={isMoving} setIsMoving={setIsMoving} counters={counters}
-                  setCounter={setCounter}/>
+                  setCounter={setActiveCounter}/>
           {/* <Controls/> */}
         </Canvas>
-        <PlaceButton setActive={setActive} active={active} isMoving={isMoving} setIsMoving={setIsMoving}/>
+        <PlaceButton  setActive={setActive} active={active} isMoving={isMoving} setIsMoving={setIsMoving}
+                      placeCounter={placeCounter}/>
       </div>
   )
 }
