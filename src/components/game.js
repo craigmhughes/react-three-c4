@@ -37,10 +37,10 @@ const Board = ({active, setActive, isMoving, setIsMoving})=>{
   });
 
   // Width, Height, Depth
-  let dimensions =  [1.5, 1.5, 0.2]
+  let dimensions =  [1.5, 1.25, 0.2]
   let colNum = 7;
   let colElements = [];
-  
+
   // Set active column, start at -1 and none selected.
   const [activeCol, setActiveCol] = useState(-1);
 
@@ -58,9 +58,7 @@ const Board = ({active, setActive, isMoving, setIsMoving})=>{
     <a.mesh
       ref={ref}
       rotation-y={props.rotationY}
-      position-x={0.05}>
-        {/* <boxGeometry attach="geometry" args={dimensions} />
-        <a.meshPhysicalMaterial attach="material" color="red"/> */}
+      position-x={0.025}>
         {colElements}
     </a.mesh>
   )
@@ -68,19 +66,46 @@ const Board = ({active, setActive, isMoving, setIsMoving})=>{
 
 const BoardColumn = ({id, dimensions, cols, activeCol, setActiveCol})=>{
   const ref = useRef();
+  let counters = [];
 
   const props = useSpring({
     color: activeCol === id ? "red" : "grey",
   });
 
+  for(let i = 0; i < Math.round(dimensions[1] / (dimensions[0] / cols)); i++){
+    counters.push(<Counter key={i} id={i} dimensions={dimensions} cols={cols} owner={Math.random() * 2}/>);
+  }
+
   return (
     <a.mesh
       ref={ref}
       position-x={-dimensions[0]/2 + ((dimensions[0] / cols) + 0.02) * id }
-      position-z={0.1}
       onClick={()=>{setActiveCol(id)}}>
       
-      <boxGeometry attach="geometry" args={[(dimensions[0] / cols), dimensions[1], dimensions[2]]} />
+      {/* <boxGeometry attach="geometry" args={[(dimensions[0] / cols), dimensions[1], dimensions[2]]} />
+      <a.meshPhysicalMaterial attach="material" color={props.color}/> */}
+      
+      {counters}
+    </a.mesh>
+  )
+}
+
+const Counter = ({id, dimensions, cols, owner})=>{
+  const ref = useRef();
+  let size = (dimensions[0] / cols) * 0.5;
+  const props = useSpring({
+    color: owner > 1 ? "red" : "yellow",
+  });
+
+  console.log(owner);
+
+  return (
+    <a.mesh
+      ref={ref}
+      rotation-x={1.55}
+      position-y={-0.65 + (0.25 * id)}>
+      
+      <cylinderGeometry attach="geometry" args={[size,size,size,10]} />
       <a.meshPhysicalMaterial attach="material" color={props.color}/>
     </a.mesh>
   )
@@ -102,7 +127,7 @@ const PlaceButton = ({setActive, active, setIsMoving, isMoving})=>{
   )
 }
 
-function GameCanvas(){
+const GameCanvas = ()=>{
   const [active, setActive] = useState(false);
   const [isMoving, setIsMoving] = useState(false);
 
@@ -110,10 +135,11 @@ function GameCanvas(){
       <div id="game-root">
         <Canvas shadowMap>
           <Camera />
-          {/* <Controls/> */}
+          
           <ambientLight/>
           <spotLight position={[0,5,10]}/>
           <Board setActive={setActive} active={active} isMoving={isMoving} setIsMoving={setIsMoving}/>
+          <Controls/>
         </Canvas>
         <PlaceButton setActive={setActive} active={active} isMoving={isMoving} setIsMoving={setIsMoving}/>
       </div>
