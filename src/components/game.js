@@ -93,7 +93,7 @@ const BoardColumn = ({id, dimensions, cols, activeCol, setActiveCol, counters, s
       }}>
       {counterElements}
       <boxGeometry attach="geometry" args={[(dimensions[0] / cols), dimensions[1], dimensions[2]]}/>
-      <a.meshBasicMaterial attach="material" color={props.color} wireframe={true}/>
+      <a.meshBasicMaterial attach="material" color={props.color} transparent={true} opacity={0.01}/>
     </a.mesh>
   )
 }
@@ -115,14 +115,13 @@ const Counter = ({id, dimensions, cols, owner, isPlaced})=>{
       rotation-x={1.55}
       position-y={props.y}>
       
-      <cylinderGeometry attach="geometry" args={[size,size,size,10]} />
+      <cylinderGeometry attach="geometry" args={[size,size,size,20]} />
       <a.meshPhysicalMaterial attach="material" color={props.counterColor} opacity={props.transparent}/>
     </a.mesh>
   )
 }
 
 const PlaceButton = ({setActive, active, setIsMoving, isMoving, placeCounter})=>{
-
   function handleClick(e){
     e.preventDefault();
 
@@ -134,7 +133,7 @@ const PlaceButton = ({setActive, active, setIsMoving, isMoving, placeCounter})=>
   }
 
   return(
-    <button id="place-button" style={{height: "100px", width: "100px"}} onClick={(e)=>{handleClick(e)}}>Click</button>
+    <button id="place-button" onClick={(e)=>{handleClick(e)}}>Place Counter</button>
   )
 }
 
@@ -167,15 +166,60 @@ const GameCanvas = ()=>{
    */
   function placeCounter(){
     counters[activeCounter[0]][counters[activeCounter[0]].length] = activeCounter[1];
+    activeCounter.push(counters[activeCounter[0]].length - 1);
+    checkWin(activeCounter);
     setPlayer(player * -1);
     setActiveCounter([activeCol, player * -1]);
+  }
+
+  function checkWin(counter){
+    // X and Y axis
+    let coords = [counter[0], counter[2]];
+    // Player who owns counter
+    let owner = counter[1];
+    // Is touching bounds at L or R
+    let hitBound = [counters[coords[0] - 1] === undefined, counters[coords[0] + 1] === undefined];
+
+    let checkWin = false;
+    let hasWon = false;
+
+    let count = 1;
+
+    console.log(count);
+
+    // Horizontal Check Left
+    for(let i = 1; i < 7; i++){
+      if(counters[coords[0] + i] > 6){
+        break;
+      } else if(typeof counters[coords[0] + i] !== 'undefined') {
+        if(counters[coords[0] + i][coords[1]] == owner){
+          count+=1;
+        } else {
+          break;
+        }
+      }
+    }
+
+    // Horizontal Check Right
+    for(let i = 1; i < 7; i++){
+      if(counters[coords[0] - i] < 0){
+        break;
+      } else if(typeof counters[coords[0] - i] !== 'undefined') {
+        if(counters[coords[0] - i][coords[1]] == owner){
+          count+=1;
+        } else {
+          break;
+        }
+      }
+    }
+
+    console.log(count);
   }
 
   return(
       <div id="game-root">
         <Canvas shadowMap>
-          <Camera />
-          
+          <Camera/>
           <ambientLight/>
           <spotLight position={[0,5,10]}/>
           <Board  setActive={setActive} active={active} isMoving={isMoving} setIsMoving={setIsMoving} counters={counters}
