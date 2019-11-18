@@ -177,19 +177,19 @@ const GameCanvas = ()=>{
     let coords = [counter[0], counter[2]];
     // Player who owns counter
     let owner = counter[1];
-    // Is touching bounds at L or R
-    let hitBound = [counters[coords[0] - 1] === undefined, counters[coords[0] + 1] === undefined];
 
     let checkWin = false;
     let hasWon = false;
+    
+    console.log(`Horizontal: ${checkHorizontal(coords, owner)}`);
+    console.log(`Vertical: ${checkVertical(coords, owner)}`);
+  }
 
+  function checkHorizontal(coords, owner){
     let count = 1;
-
-    console.log(count);
-
-    // Horizontal Check Left
+    // Check Left
     for(let i = 1; i < 7; i++){
-      if(counters[coords[0] + i] > 6){
+      if(coords[0] + i > 6){
         break;
       } else if(typeof counters[coords[0] + i] !== 'undefined') {
         if(counters[coords[0] + i][coords[1]] == owner){
@@ -199,10 +199,9 @@ const GameCanvas = ()=>{
         }
       }
     }
-
-    // Horizontal Check Right
+    // Check Right
     for(let i = 1; i < 7; i++){
-      if(counters[coords[0] - i] < 0){
+      if(coords[0] - i < 0){
         break;
       } else if(typeof counters[coords[0] - i] !== 'undefined') {
         if(counters[coords[0] - i][coords[1]] == owner){
@@ -213,7 +212,37 @@ const GameCanvas = ()=>{
       }
     }
 
-    console.log(count);
+    return count >= 4;
+  }
+
+  function checkVertical(coords, owner){
+    let count = 1;
+    // Check Up
+    for(let i = 1; i < 6; i++){
+      if(coords[1] + i > 5){
+        break;
+      } else if(typeof counters[coords[0]][coords[1] + i] !== 'undefined') {
+        if(counters[coords[0]][coords[1] + i] == owner){
+          count+=1;
+        } else {
+          break;
+        }
+      }
+    }
+    // Check Down
+    for(let i = 1; i < 7; i++){
+      if(coords[1] - i < 0){
+        break;
+      } else if(typeof counters[coords[0]][coords[1] - i] !== 'undefined') {
+        if(counters[coords[0]][coords[1] - i] == owner){
+          count+=1;
+        } else {
+          break;
+        }
+      }
+    }
+
+    return count >= 4;
   }
 
   return(
