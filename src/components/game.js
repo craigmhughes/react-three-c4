@@ -178,11 +178,18 @@ const GameCanvas = ()=>{
     // Player who owns counter
     let owner = counter[1];
 
-    let checkWin = false;
+    let checkWin = [
+      checkHorizontal(coords, owner), 
+      checkVertical(coords, owner),
+      checkDiagonalLeft(coords, owner),
+      checkDiagonalRight(coords, owner)
+    ];
+
     let hasWon = false;
+
+    console.log(checkWin);
     
-    console.log(`Horizontal: ${checkHorizontal(coords, owner)}`);
-    console.log(`Vertical: ${checkVertical(coords, owner)}`);
+
   }
 
   function checkHorizontal(coords, owner){
@@ -235,6 +242,66 @@ const GameCanvas = ()=>{
         break;
       } else if(typeof counters[coords[0]][coords[1] - i] !== 'undefined') {
         if(counters[coords[0]][coords[1] - i] == owner){
+          count+=1;
+        } else {
+          break;
+        }
+      }
+    }
+
+    return count >= 4;
+  }
+
+  function checkDiagonalRight(coords, owner){
+    let count = 1;
+    // Check Up
+    for(let i = 1; i < 6; i++){
+      if(coords[0] + i > 5 || coords[1] + i > 5){
+        break;
+      } else if(typeof counters[coords[0] + i][coords[1] + i] !== 'undefined') {
+        if(counters[coords[0] + i][coords[1] + i] == owner){
+          count+=1;
+        } else {
+          break;
+        }
+      }
+    }
+    // Check Down
+    for(let i = 1; i < 7; i++){
+      if(coords[0] - i < 0 || coords[1] - i < 0){
+        break;
+      } else if(typeof counters[coords[0] - i][coords[1] - i] !== 'undefined') {
+        if(counters[coords[0] - i][coords[1] - i] == owner){
+          count+=1;
+        } else {
+          break;
+        }
+      }
+    }
+
+    return count >= 4;
+  }
+
+  function checkDiagonalLeft(coords, owner){
+    let count = 1;
+    // Check Up
+    for(let i = 1; i < 6; i++){
+      if(coords[0] + i > 5 || coords[1] - i < 0){
+        break;
+      } else if(typeof counters[coords[0] + i][coords[1] - i] !== 'undefined') {
+        if(counters[coords[0] + i][coords[1] - i] == owner){
+          count+=1;
+        } else {
+          break;
+        }
+      }
+    }
+    // Check Down
+    for(let i = 1; i < 7; i++){
+      if(coords[0] - i < 0 || coords[1] + i > 5){
+        break;
+      } else if(typeof counters[coords[0] - i][coords[1] + i] !== 'undefined') {
+        if(counters[coords[0] - i][coords[1] + i] == owner){
           count+=1;
         } else {
           break;
