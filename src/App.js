@@ -1,8 +1,7 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
 
-import GameCanvas from './components/game.js';
+import GameCanvas from './components/Game.js';
 
 function App() {
   return (
