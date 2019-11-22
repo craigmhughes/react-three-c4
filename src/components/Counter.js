@@ -4,7 +4,8 @@ import { useSpring, a } from 'react-spring/three';
 const Counter = ({id, dimensions, cols, owner, isPlaced})=>{
     const ref = useRef();
     let size = true ? (dimensions[0] / cols) * 0.75 : (dimensions[0] / cols) * 0.5;
-    let color = owner > 0 ? "yellow" : "red";
+    // Hex - Yellow, Red
+    let color = owner > 0 ? "#e8ea5e" : "#bb4042";
 
     const props = useSpring({
         counterColor: color,

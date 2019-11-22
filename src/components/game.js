@@ -47,6 +47,17 @@ const PlaceButton = ({setActive, active, setIsMoving, isMoving, placeCounter})=>
   )
 }
 
+const Ground = ()=>{
+  return (
+    <mesh
+    position-z={0}
+    position-y={-0.675}>
+      <boxGeometry attach="geometry" args={[10,0.01,10]}/>
+      <meshStandardMaterial attach="material" color={"green"}/>
+    </mesh>
+  )
+}
+
 const GameCanvas = ()=>{
 
   // Toggles rotation of game board
@@ -101,8 +112,6 @@ const GameCanvas = ()=>{
     
 
   }
-
-
 
   function checkHorizontal(coords, owner){
     let count = 1;
@@ -229,10 +238,11 @@ const GameCanvas = ()=>{
         <Canvas shadowMap>
           <Camera/>
           <ambientLight/>
-          <spotLight position={[0,5,10]}/>
+          <pointLight position={[30,30,250]} intensity={0.4}/>
           <Board  setActive={setActive} active={active} isMoving={isMoving} setIsMoving={setIsMoving} counters={counters}
                   setCounter={setActiveCounter} player={player} activeCol={activeCol} setActiveCol={setActiveCol}/>
           {/* <Controls/> */}
+          <Ground/>
         </Canvas>
         <PlaceButton  setActive={setActive} active={active} isMoving={isMoving} setIsMoving={setIsMoving} setActiveCol={setActiveCol}
                       placeCounter={placeCounter} setPlayer={setPlayer} player={player} activeCol={activeCol} setActiveCounter={setActiveCounter}/>
