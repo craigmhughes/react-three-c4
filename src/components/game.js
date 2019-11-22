@@ -1,13 +1,16 @@
 import React, { useRef, useState } from 'react';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { Canvas, extend, useThree, useRender } from 'react-three-fiber';
+import *  as THREE from 'three';
 
 import Board from './Board';
+import { Fog } from 'three';
 
-const Camera = () => {
+const Camera = (isActive) => {
   const three = useThree();
   const camera = three.camera;
   camera.position.z = 2.5;
+  camera.position.y = isActive ? 0 : 2.5;
   three.gl.setSize(window.innerWidth, window.innerHeight);
 
   return null;
@@ -50,10 +53,12 @@ const PlaceButton = ({setActive, active, setIsMoving, isMoving, placeCounter})=>
 const Ground = ()=>{
   return (
     <mesh
+    rotation-x={-1.6}
     position-z={0}
-    position-y={-0.675}>
-      <boxGeometry attach="geometry" args={[10,0.01,10]}/>
-      <meshStandardMaterial attach="material" color={"green"}/>
+    position-y={-0.675}
+    receiveShadow>
+      <planeBufferGeometry attach="geometry" args={[1000, 1000]} />
+      <meshPhongMaterial attach="material" color={"#4fd654"}/>
     </mesh>
   )
 }
@@ -235,14 +240,16 @@ const GameCanvas = ()=>{
 
   return(
       <div id="game-root">
-        <Canvas shadowMap>
-          <Camera/>
-          <ambientLight/>
-          <pointLight position={[30,30,250]} intensity={0.4}/>
+        <Canvas onCreated={({ gl }) => ((gl.shadowMap.enabled = true), (gl.shadowMap.type = THREE.PCFSoftShadowMap))}>
+          <Camera isActive={active}/>
+          <ambientLight intensity={0.5} />
+          <spotLight intensity={0.6} position={[30, 30, 20]} angle={0.2} penumbra={1} castShadow />
+          <spotLight intensity={0.6} position={[30, 30, 100]} angle={0.2} penumbra={1} castShadow />
           <Board  setActive={setActive} active={active} isMoving={isMoving} setIsMoving={setIsMoving} counters={counters}
                   setCounter={setActiveCounter} player={player} activeCol={activeCol} setActiveCol={setActiveCol}/>
           {/* <Controls/> */}
           <Ground/>
+          <fog attach="fog" args={['#4cd4ff', 0, 80]} />
         </Canvas>
         <PlaceButton  setActive={setActive} active={active} isMoving={isMoving} setIsMoving={setIsMoving} setActiveCol={setActiveCol}
                       placeCounter={placeCounter} setPlayer={setPlayer} player={player} activeCol={activeCol} setActiveCounter={setActiveCounter}/>

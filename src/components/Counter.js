@@ -17,10 +17,12 @@ const Counter = ({id, dimensions, cols, owner, isPlaced})=>{
         <a.mesh
         ref={ref}
         rotation-x={true ? 0 : 1.55}
-        position-y={props.y}>
+        position-y={props.y}
+        castShadow={isPlaced}
+        receiveShadow>
         
         <boxGeometry attach="geometry" args={[size,size,size]} />
-        <a.meshPhysicalMaterial attach="material" color={props.counterColor} opacity={props.transparent}/>
+        <a.meshPhongMaterial attach="material" color={props.counterColor} opacity={props.transparent}/>
         </a.mesh>
     )
 }

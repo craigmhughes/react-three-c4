@@ -32,7 +32,10 @@ const Board = ({active, setActive, isMoving, setIsMoving, counters, setCounter, 
       <a.mesh
         ref={ref}
         rotation-y={props.rotationY}
-        position-x={0.025}>
+        position-y={0}
+        position-x={0.025}
+        castShadow 
+        receiveShadow>
           {colElements}
           <GameBoard/>
       </a.mesh>

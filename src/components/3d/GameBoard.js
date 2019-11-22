@@ -4,13 +4,14 @@ import * as THREE from 'three';
 
 const GameBoard = ()=>{
     const [model, setModel] = useState();
-    const newMaterial = new THREE.MeshStandardMaterial({color: 0x006d90});
+    const newMaterial = new THREE.MeshPhongMaterial({color: 0x006d90});
 
     useEffect(()=>{
         if(!model){
         new GLTFLoader().load("blockfour-2.gltf", (obj)=>{
             obj.scene.traverse((child)=>{
                 if (child.isMesh) child.material = newMaterial;
+                if ( child instanceof THREE.Mesh ) { child.castShadow = true; }
             });
             setModel(obj);
         });
