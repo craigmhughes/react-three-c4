@@ -57,7 +57,7 @@ const Ground = ()=>{
     position-z={0}
     position-y={-0.675}
     receiveShadow>
-      <planeBufferGeometry attach="geometry" args={[1000, 1000]} />
+      <planeBufferGeometry attach="geometry" args={[10, 10]} />
       <meshPhongMaterial attach="material" color={"#4fd654"}/>
     </mesh>
   )
@@ -243,13 +243,12 @@ const GameCanvas = ()=>{
         <Canvas onCreated={({ gl }) => ((gl.shadowMap.enabled = true), (gl.shadowMap.type = THREE.PCFSoftShadowMap))}>
           <Camera isActive={active}/>
           <ambientLight intensity={0.5} />
-          <spotLight intensity={0.6} position={[30, 30, 20]} angle={0.2} penumbra={1} castShadow />
-          <spotLight intensity={0.6} position={[30, 30, 100]} angle={0.2} penumbra={1} castShadow />
+          <spotLight intensity={1.5} position={[20, 20, 20]} angle={0.2} penumbra={1} castShadow />
           <Board  setActive={setActive} active={active} isMoving={isMoving} setIsMoving={setIsMoving} counters={counters}
                   setCounter={setActiveCounter} player={player} activeCol={activeCol} setActiveCol={setActiveCol}/>
           {/* <Controls/> */}
           <Ground/>
-          <fog attach="fog" args={['#4cd4ff', 0, 80]} />
+          <fog attach="fog" args={['#4cd4ff', 6, 8]} />
         </Canvas>
         <PlaceButton  setActive={setActive} active={active} isMoving={isMoving} setIsMoving={setIsMoving} setActiveCol={setActiveCol}
                       placeCounter={placeCounter} setPlayer={setPlayer} player={player} activeCol={activeCol} setActiveCounter={setActiveCounter}/>
