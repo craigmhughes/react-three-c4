@@ -25,6 +25,28 @@ canvas {
   overflow-y: hidden;
 }
 
+#canvas-container {
+  transition: all 0.5s ease-in-out;
+}
+
+#canvas-container.active {
+  filter: blur(3.5px);
+}
+
+#game-logo {
+  position: fixed;
+  top: 1em;
+  width: 9em;
+  left: calc(50% - 10.25em);
+}
+
+#turn-card {
+  position: fixed;
+  top: 0.125em;
+  width: 12em;
+  left: calc(50% - 2.25em);
+}
+
 #place-button {
   position: fixed;
   bottom: 0em;
@@ -39,4 +61,28 @@ canvas {
   font-size: 1em;
   width: 10em;
   left: calc(50% + 0.5em);
+}
+
+#exit-modal {
+  position: absolute;
+  top: calc(50% - 10em);
+  left: calc(50% - 15em);
+  width: 30em;
+
+}
+
+#exit-modal-container {
+  height: 100%;
+  width: 100%;
+  position: fixed;
+  top: 110%;
+}
+
+#exit-modal-container {
+  transition: all .5s ease-in-out;
+}
+
+#exit-modal-container.active {
+  top: 0;
+  
 }
