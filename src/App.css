@@ -38,6 +38,13 @@ canvas {
   top: 1em;
   width: 9em;
   left: calc(50% - 10.25em);
+  transition: all 0.25s ease-in;
+}
+
+#game-logo.menu {
+  width: 20em;
+  left: calc(50% - 10em);
+  top: calc(50% - 15em);
 }
 
 #turn-card {
@@ -45,6 +52,11 @@ canvas {
   top: 0.125em;
   width: 12em;
   left: calc(50% - 2.25em);
+  transition: all 0.25s ease-in;
+}
+
+#turn-card.hidden {
+  top: -50%;
 }
 
 #place-button {
@@ -53,6 +65,11 @@ canvas {
   font-size: 1em;
   width: 12.25em;
   left: calc(50% - 9.25em);
+  transition: all 0.25s ease-in;
+}
+
+#place-button.hidden {
+  bottom: -50%;
 }
 
 #exit-game {
@@ -61,6 +78,11 @@ canvas {
   font-size: 1em;
   width: 10em;
   left: calc(50% + 0.5em);
+  transition: all .25s ease-in-out;
+}
+
+#exit-game.hidden {
+  bottom: -50%;
 }
 
 #exit-modal {
@@ -76,13 +98,35 @@ canvas {
   width: 100%;
   position: fixed;
   top: 110%;
-}
-
-#exit-modal-container {
   transition: all .5s ease-in-out;
 }
 
 #exit-modal-container.active {
   top: 0;
   
+}
+
+#exit-confirm {
+  position: absolute;
+  top: calc(50% - 1em);
+  left: calc(50% - 8em);
+  width: 10em;
+}
+
+#exit-cancel {
+  position: absolute;
+  top: calc(50% - 0.5em);
+  left: calc(50% + 1em);
+  width: 8em;
+}
+
+#singleplay-btn {
+  position: fixed;
+  top: calc(50% - 7em);
+  left: 0;
+  transition: all .35s ease-in-out;
+}
+
+#singleplay-btn.hidden {
+  left: -150%;
 }

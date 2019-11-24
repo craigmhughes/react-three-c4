@@ -71,6 +71,20 @@ const GameCanvas = ()=>{
 
   // Set exit modal
   const [modal, setModal] = useState(false);
+
+  // Controls Game menus in Interface
+  const [gameState, setGameState] = useState(0);
+
+  function gameStateChange(i){
+    // If set to 0, reset counters -- creating new game.
+    if(i === 0){
+      setCounters([
+        [],[],[],[],[],[],[]
+      ]);
+    }
+
+    setGameState(i);
+  }
   
 
   /**
@@ -225,7 +239,7 @@ const GameCanvas = ()=>{
   return(
       <div id="game-root">
         <Canvas onCreated={({ gl }) => ((gl.shadowMap.enabled = true), (gl.shadowMap.type = THREE.PCFSoftShadowMap))}
-                className={modal ? "active" : ""} id="canvas-container">
+                className={modal || gameState !== 1 ? "active" : ""} id="canvas-container">
           <Camera isActive={active}/>
           <ambientLight intensity={0.5} />
           <spotLight intensity={1.5} position={[20, 5, 10]} angle={0.2} penumbra={1} castShadow />
@@ -237,7 +251,8 @@ const GameCanvas = ()=>{
           <fog attach="fog" args={['#4cd4ff', 0, 8]} />
         </Canvas>
         <Interface  setActive={setActive} active={active} isMoving={isMoving} setIsMoving={setIsMoving}
-                    placeCounter={placeCounter} modal={modal} setModal={setModal}/>
+                    placeCounter={placeCounter} modal={modal} setModal={setModal} gameState={gameState} 
+                    setGameState={gameStateChange}/>
       </div>
   )
 }
