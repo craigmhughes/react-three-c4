@@ -4,6 +4,7 @@ import { Canvas, extend, useThree, useRender } from 'react-three-fiber';
 import *  as THREE from 'three';
 
 import Board from './Board';
+import Interface from './Interface';
 
 const Camera = (isActive) => {
   const three = useThree();
@@ -32,22 +33,6 @@ const Controls = () =>{
     args={[camera, gl.domElement]} 
     ref={orbitRef}/>);
 };
-
-const PlaceButton = ({setActive, active, setIsMoving, isMoving, placeCounter})=>{
-  function handleClick(e){
-    e.preventDefault();
-
-    if(isMoving == false){
-      setActive(!active);
-      setIsMoving(true);
-      placeCounter();
-    }
-  }
-
-  return(
-    <button id="place-button" onClick={(e)=>{handleClick(e)}}>Place Counter</button>
-  )
-}
 
 const Ground = ()=>{
   return (
@@ -113,8 +98,6 @@ const GameCanvas = ()=>{
     let hasWon = false;
 
     console.log(checkWin);
-    
-
   }
 
   function checkHorizontal(coords, owner){
@@ -245,13 +228,13 @@ const GameCanvas = ()=>{
           <spotLight intensity={1.5} position={[20, 5, 10]} angle={0.2} penumbra={1} castShadow />
           <Board  setActive={setActive} active={active} isMoving={isMoving} setIsMoving={setIsMoving} counters={counters}
                   setCounter={setActiveCounter} player={player} activeCol={activeCol} setActiveCol={setActiveCol}/>
-          <Controls/>
+          {/* <Controls/> */}
           <Ground/>
           
           <fog attach="fog" args={['#4cd4ff', 0, 8]} />
         </Canvas>
-        <PlaceButton  setActive={setActive} active={active} isMoving={isMoving} setIsMoving={setIsMoving} setActiveCol={setActiveCol}
-                      placeCounter={placeCounter} setPlayer={setPlayer} player={player} activeCol={activeCol} setActiveCounter={setActiveCounter}/>
+        <Interface  setActive={setActive} active={active} isMoving={isMoving} setIsMoving={setIsMoving}
+                    placeCounter={placeCounter}/>
       </div>
   )
 }

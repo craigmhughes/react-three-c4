@@ -27,15 +27,16 @@ canvas {
 
 #place-button {
   position: fixed;
-  bottom: 1em;
+  bottom: 0em;
   font-size: 1em;
-  left: 1em;
-  width: calc(100% - 2em);
-  background: #fff;
-  color: #000;
-  border: none;
-  font-weight: 800;
-  padding: 1.75em 0;
-  border-radius: 4em;
-  outline: none;
+  width: 12.25em;
+  left: calc(50% - 9.25em);
+}
+
+#exit-game {
+  position: fixed;
+  bottom: 0.6em;
+  font-size: 1em;
+  width: 10em;
+  left: calc(50% + 0.5em);
 }
