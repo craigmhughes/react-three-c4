@@ -1,6 +1,11 @@
 import React, { useRef } from 'react';
 import { useSpring, a } from 'react-spring/three';
 
+/**
+ * Model representation of the counters variable found in Game.js
+ * 
+ * @param {*} param0 = States from parent
+ */
 const Counter = ({id, dimensions, cols, owner, isPlaced})=>{
     const ref = useRef();
     let size = (dimensions[0] / cols) * 1.075;

@@ -6,11 +6,14 @@ import *  as THREE from 'three';
 import Board from './Board';
 import Interface from './Interface';
 
-const Camera = (isActive) => {
+/**
+ * Game camera, placed looking at center of the game board.
+ */
+const Camera = () => {
   const three = useThree();
   const camera = three.camera;
   camera.position.z = 2.5;
-  camera.position.y = isActive ? 0 : 2.5;
+  camera.position.y = 0;
   three.gl.setSize(window.innerWidth, window.innerHeight);
 
   return null;
@@ -18,6 +21,10 @@ const Camera = (isActive) => {
 
 extend({OrbitControls});
 
+/**
+ * Controles used for testing purposes.
+ * TODO: Remove on project completion.
+ */
 const Controls = () =>{
   const orbitRef = useRef();
   const {camera, gl} = useThree();
@@ -34,6 +41,9 @@ const Controls = () =>{
     ref={orbitRef}/>);
 };
 
+/**
+ * Ground model.
+ */
 const Ground = ()=>{
   return (
     <mesh
@@ -47,6 +57,9 @@ const Ground = ()=>{
   )
 }
 
+/**
+ * Game Container
+ */
 const GameCanvas = ()=>{
 
   // Toggles rotation of game board
@@ -75,9 +88,22 @@ const GameCanvas = ()=>{
   // Controls Game menus in Interface
   const [gameState, setGameState] = useState(0);
 
-  function gameStateChange(i){
-    // If set to 0, reset counters -- creating new game.
-    if(i === 0){
+  // Game mode
+  const [isSinglePlayer, setIsSinglePlayer] = useState(true);
+
+  // Winning Player - default to player one.
+  const [winner, setWinner] = useState(1);
+
+  /**
+   * Acts as a barrier between gameState changes.
+   * Makes it easier to reset game when needed.
+   * 
+   * @param {int} i = Game state value
+   * @param {Boolean} reset = Reset counters
+   */
+  function gameStateChange(i, reset){
+    // If set to 0 or reset is true, reset counters -- creating new game.
+    if(i === 0 || reset){
       setCounters([
         [],[],[],[],[],[],[]
       ]);
@@ -98,12 +124,19 @@ const GameCanvas = ()=>{
     setActiveCounter([activeCol, player * -1]);
   }
 
+  /**
+   * Creates an array of possible win directions and if any are true,
+   * sets game to state 2 (Win state).
+   * 
+   * @param {*} counter = Last placed counter
+   */
   function checkWin(counter){
     // X and Y axis
     let coords = [counter[0], counter[2]];
     // Player who owns counter
     let owner = counter[1];
 
+    // Array of possible win directions
     let checkWin = [
       checkHorizontal(coords, owner), 
       checkVertical(coords, owner),
@@ -111,14 +144,27 @@ const GameCanvas = ()=>{
       checkDiagonalRight(coords, owner)
     ];
 
-    let hasWon = false;
+    // If any win, set game to state 2 (Win)
+    for(let i = 0; i < checkWin.length; i++){
+      if(checkWin[i]){
+        setWinner(owner);
+        console.log(winner);
+        setGameState(2);
+        break;
+      }
+    }
 
-    console.log(checkWin);
   }
 
+  /**
+   * Checks Horizontally for matching counters that are in a sequence.
+   * 
+   * @param {*} coords = Coordinates of last placed counter
+   * @param {*} owner = Owner of last placed counter
+   */
   function checkHorizontal(coords, owner){
     let count = 1;
-    // Check Left
+    // Check Right
     for(let i = 1; i < 7; i++){
       if(coords[0] + i > 6){
         break;
@@ -130,7 +176,7 @@ const GameCanvas = ()=>{
         }
       }
     }
-    // Check Right
+    // Check Left
     for(let i = 1; i < 7; i++){
       if(coords[0] - i < 0){
         break;
@@ -146,10 +192,16 @@ const GameCanvas = ()=>{
     return count >= 4;
   }
 
+  /**
+   * Checks Vertically for matching counters that are in a sequence.
+   * 
+   * @param {*} coords = Coordinates of last placed counter
+   * @param {*} owner = Owner of last placed counter
+   */
   function checkVertical(coords, owner){
     let count = 1;
     // Check Up
-    for(let i = 1; i < 6; i++){
+    for(let i = 1; i < 7; i++){
       if(coords[1] + i > 5){
         break;
       } else if(typeof counters[coords[0]][coords[1] + i] !== 'undefined') {
@@ -176,10 +228,16 @@ const GameCanvas = ()=>{
     return count >= 4;
   }
 
+  /**
+   * Checks Diagonally (Right) for matching counters that are in a sequence.
+   * 
+   * @param {*} coords = Coordinates of last placed counter
+   * @param {*} owner = Owner of last placed counter
+   */
   function checkDiagonalRight(coords, owner){
     let count = 1;
     // Check Up
-    for(let i = 1; i < 6; i++){
+    for(let i = 1; i < 7; i++){
       if(coords[0] + i > 5 || coords[1] + i > 5){
         break;
       } else if(typeof counters[coords[0] + i][coords[1] + i] !== 'undefined') {
@@ -206,10 +264,16 @@ const GameCanvas = ()=>{
     return count >= 4;
   }
 
+  /**
+   * Checks Diagonally (Left) for matching counters that are in a sequence.
+   * 
+   * @param {*} coords = Coordinates of last placed counter
+   * @param {*} owner = Owner of last placed counter
+   */
   function checkDiagonalLeft(coords, owner){
     let count = 1;
     // Check Up
-    for(let i = 1; i < 6; i++){
+    for(let i = 1; i < 7; i++){
       if(coords[0] + i > 5 || coords[1] - i < 0){
         break;
       } else if(typeof counters[coords[0] + i][coords[1] - i] !== 'undefined') {
@@ -252,7 +316,8 @@ const GameCanvas = ()=>{
         </Canvas>
         <Interface  setActive={setActive} active={active} isMoving={isMoving} setIsMoving={setIsMoving}
                     placeCounter={placeCounter} modal={modal} setModal={setModal} gameState={gameState} 
-                    setGameState={gameStateChange}/>
+                    setGameState={gameStateChange} winner={winner}
+                    isSinglePlayer={isSinglePlayer} setIsSinglePlayer={setIsSinglePlayer}/>
       </div>
   )
 }

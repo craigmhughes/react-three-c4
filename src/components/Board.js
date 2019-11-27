@@ -6,6 +6,11 @@ import GameBoard from './3d/GameBoard';
 import Counter from './Counter';
 import Clouds from './3d/Clouds';
 
+/**
+ * Board container
+ * 
+ * @param {*} param0 = States from parent
+ */
 const Board = ({active, setActive, isMoving, setIsMoving, counters, setCounter, player, activeCol, setActiveCol})=>{
     const ref = useRef();
     const props = useSpring({
@@ -44,6 +49,11 @@ const Board = ({active, setActive, isMoving, setIsMoving, counters, setCounter, 
     )
   }
   
+  /**
+   * Column containing counters.
+   * 
+   * @param {*} param0 = States from parent
+   */
   const BoardColumn = ({id, dimensions, cols, activeCol, setActiveCol, counters, setCounter, player})=>{
     const ref = useRef();
     let colId = id;

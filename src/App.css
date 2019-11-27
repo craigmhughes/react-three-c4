@@ -120,13 +120,76 @@ canvas {
   width: 8em;
 }
 
-#singleplay-btn {
+#singleplay-btn, #twoplayer-btn {
   position: fixed;
   top: calc(50% - 7em);
-  left: 0;
+  left: calc(50% - 11.25em);
   transition: all .35s ease-in-out;
+  width: 22.5em;
 }
 
-#singleplay-btn.hidden {
+#singleplay-btn {
+  top: calc(50% - 7em);
+}
+
+#twoplayer-btn {
+  top: calc(50% - 1em);
+}
+
+#singleplay-btn.hidden, #twoplayer-btn.hidden {
   left: -150%;
+}
+
+
+#end-modal {
+  position: absolute;
+  top: calc(50% - 10em);
+  left: calc(50% - 15em);
+  width: 30em;
+
+}
+
+#endgame-modal-container {
+  height: 100%;
+  width: 100%;
+  position: fixed;
+  top: 110%;
+  transition: all .5s ease-in-out;
+}
+
+#endgame-modal-container.active {
+  top: 0;
+}
+
+#end-confirm {
+  position: absolute;
+  top: calc(50% - 1em);
+  left: calc(50% - 8em);
+  width: 10em;
+}
+
+#retry-game {
+  position: absolute;
+  top: calc(50% - 1em);
+  left: calc(50% + 0.25em);
+  width: 9.5em;
+}
+
+#end-winner {
+  position: absolute;
+  width: 22em;
+  top: calc(50% - 9em);
+  left: calc(50% - 11em);
+
+}
+
+#project-credit {
+  position: fixed;
+  bottom: 1em;
+  width: 18em;
+  left: calc(50% - 9em);
+}
+
+#project-credit.hidden {
+  bottom: -100%;
 }
