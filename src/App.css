@@ -1,5 +1,4 @@
 
-
 body {
   background: #4cd4ff;
   margin: 0;
@@ -7,6 +6,8 @@ body {
   height: 90%;
   overflow: hidden;
 }
+
+/* ------ Game Container ------ */
 
 #game-root {
   position: fixed;
@@ -19,6 +20,8 @@ body {
   overflow-x: hidden; 
     overflow-y: hidden;
 }
+
+/* ------ Canvas ------ */
 
 canvas {
   overflow-x: hidden; 
@@ -33,6 +36,9 @@ canvas {
   filter: blur(3.5px);
 }
 
+/* ------ User Interface ------ */
+
+/* Top */
 #game-logo {
   position: fixed;
   top: 1em;
@@ -59,6 +65,8 @@ canvas {
   top: -50%;
 }
 
+/* Bottom */
+
 #place-button {
   position: fixed;
   bottom: 0em;
@@ -84,6 +92,8 @@ canvas {
 #exit-game.hidden {
   bottom: -50%;
 }
+
+/* Exit Game Modal */
 
 #exit-modal {
   position: absolute;
@@ -120,26 +130,7 @@ canvas {
   width: 8em;
 }
 
-#singleplay-btn, #twoplayer-btn {
-  position: fixed;
-  top: calc(50% - 7em);
-  left: calc(50% - 11.25em);
-  transition: all .35s ease-in-out;
-  width: 22.5em;
-}
-
-#singleplay-btn {
-  top: calc(50% - 7em);
-}
-
-#twoplayer-btn {
-  top: calc(50% - 1em);
-}
-
-#singleplay-btn.hidden, #twoplayer-btn.hidden {
-  left: -150%;
-}
-
+/* Game Win/Lose Modal */
 
 #end-modal {
   position: absolute;
@@ -182,6 +173,30 @@ canvas {
   left: calc(50% - 11em);
 
 }
+
+/* Start Menu Buttons */
+
+#singleplay-btn, #twoplayer-btn {
+  position: fixed;
+  top: calc(50% - 7em);
+  left: calc(50% - 11.25em);
+  transition: all .35s ease-in-out;
+  width: 22.5em;
+}
+
+#singleplay-btn {
+  top: calc(50% - 7em);
+}
+
+#twoplayer-btn {
+  top: calc(50% - 1em);
+}
+
+#singleplay-btn.hidden, #twoplayer-btn.hidden {
+  left: -150%;
+}
+
+/* Project Credit (Shoutout to myself for making this abomination) */
 
 #project-credit {
   position: fixed;
