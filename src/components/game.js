@@ -22,7 +22,7 @@ const Camera = () => {
 extend({OrbitControls});
 
 /**
- * Controles used for testing purposes.
+ * Controls used for testing purposes.
  * TODO: Remove on project completion.
  */
 const Controls = () =>{
@@ -116,13 +116,40 @@ const GameCanvas = ()=>{
   /**
    * Confirm placement of counter & overwrite var.
    */
-  function placeCounter(){
-    counters[activeCounter[0]][counters[activeCounter[0]].length] = activeCounter[1];
-    activeCounter.push(counters[activeCounter[0]].length - 1);
-    checkWin(activeCounter);
-    setPlayer(player * -1);
-    setActiveCounter([activeCol, player * -1]);
+  function placeCounter(aiCounter){
+    console.log(active);
+    if(typeof aiCounter !== 'undefined'){
+      console.log(aiCounter);
+      counters[aiCounter[0]][counters[aiCounter[0]].length] = aiCounter[1];
+      aiCounter.push(counters[aiCounter[0]].length - 1);
+      checkWin(aiCounter);
+    } else {
+      counters[activeCounter[0]][counters[activeCounter[0]].length] = activeCounter[1];
+      activeCounter.push(counters[activeCounter[0]].length - 1);
+      checkWin(activeCounter);
+    }
+
+    setPlayer(player);
+
+    if(!isSinglePlayer){
+      setPlayer(player * -1);
+      setActiveCounter([activeCol, player * -1]);
+    }
+    
+    if(aiCounter){
+      setActive(false);
+    } else if(active == false && isSinglePlayer){
+      ai_turn();
+    } else {
+      setActive(!active);
+    }
+
   }
+
+  function ai_turn(){
+      placeCounter([Math.floor(Math.random() * 6), -1]);   
+  }
+
 
   /**
    * Creates an array of possible win directions and if any are true,

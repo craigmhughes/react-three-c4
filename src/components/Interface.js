@@ -5,12 +5,11 @@ import React from 'react';
  * 
  * @param {*} param0 = States from parent
  */
-const PlaceButton = ({setActive, active, setIsMoving, isMoving, placeCounter, gameState})=>{
+const PlaceButton = ({setIsMoving, isMoving, placeCounter, gameState})=>{
     function handleClick(e){
       e.preventDefault();
   
       if(isMoving == false){
-        setActive(!active);
         setIsMoving(true);
         placeCounter();
       }
@@ -87,11 +86,13 @@ function Interface({setActive, active, setIsMoving, isMoving, placeCounter, moda
             <img src="assets/single-player.svg" id="singleplay-btn" onClick={()=>{
                 setGameState(1);
                 setIsSinglePlayer(true);
+                console.log("Single Player = " + isSinglePlayer);
             }}  className={gameState > 0 ? "hidden" : ""}/>
 
             <img src="assets/two-player.svg" id="twoplayer-btn" onClick={()=>{
                 setGameState(1);
                 setIsSinglePlayer(false);
+                console.log("Single Player = " + isSinglePlayer);
             }}  className={gameState > 0 ? "hidden" : ""}/>
 
             <img src="assets/exit.svg" id="exit-game"  className={gameState == 0 ? "hidden" : ""} onClick={()=>{
