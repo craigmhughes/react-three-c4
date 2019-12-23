@@ -149,31 +149,62 @@ const GameCanvas = ()=>{
    * Computer Player's turn
    */
   function ai_turn(){
-      let bestScore = -Infinity;
+
       let bestMove;
 
       for(let i = 0; i < 7; i++){
         if(counters[i].length < 6){
-          console.log("checking win");
           counters[i][counters[i].length] = 1;
-          let result = checkWin([i, 1, counters[i].length - 1], true);
+          let defeatResult = checkWin([i, 1, counters[i].length - 1], true);
           counters[i].pop();
 
-          if(result === undefined || result === "tie"){
-            console.log("no win");
-            continue
-          } else if (result > bestScore){
+          counters[i][counters[i].length] = -1;
+          let winResult = checkWin([i, -1, counters[i].length - 1], true);
+          counters[i].pop();
+
+          if(winResult !== undefined && winResult !== "tie"){
+            console.log("overwriting win!");
+            bestMove = i;
+            break;
+          }
+
+          if(defeatResult !== undefined && defeatResult !== "tie"){
             console.log("overwriting win!");
             bestMove = i;
           }
         }
       }
 
+      // let closestWinIndex = Infinity;
+
+      // for(let i = 0; i < 7; i++){
+      //   let isMax = true;
+      //   let counterIndex = counters[i].length;
+      //   for(let j = 0; j < 2; j++){
+      //     if(counters[i].length < 6){
+      //       counters[i][counterIndex] = isMax ? 1 : -1;
+      //       let result = checkWin([i, isMax ? 1 : -1, counters[i].length - 1], true);      
+
+      //       if(result === undefined || result === "tie"){
+      //         continue
+      //       } else if (result < bestScore && j < closestWinIndex){
+      //         console.log("overwriting win!");
+      //         bestMove = i;
+      //         closestWinIndex = j;
+      //       }
+      //       isMax = !isMax;
+      //     }
+      //   }
+
+      //   counters[i].splice(counterIndex, 1);
+      // }
+
       if (bestMove == undefined){
         bestMove = Math.floor(Math.random() * 7);
       }
 
-      placeCounter([bestMove, -1]);   
+      placeCounter([bestMove, -1]);
+      checkWin([bestMove, -1, counters[bestMove].length - 1])  
   }
 
   /**
@@ -266,7 +297,7 @@ const GameCanvas = ()=>{
     let count = 1;
     // Check Up
     for(let i = 1; i < 7; i++){
-      if(coords[1] + i > 5){
+      if(coords[1] + i > 6){
         break;
       } else if(typeof counters[coords[0]][coords[1] + i] !== 'undefined') {
         if(counters[coords[0]][coords[1] + i] == owner){
@@ -288,8 +319,7 @@ const GameCanvas = ()=>{
         }
       }
     }
-    console.log(counters[coords[0]]);
-    console.log(count >= 4);
+
     return count >= 4;
   }
 
@@ -303,7 +333,7 @@ const GameCanvas = ()=>{
     let count = 1;
     // Check Up
     for(let i = 1; i < 7; i++){
-      if(coords[0] + i > 5 || coords[1] + i > 5){
+      if(coords[0] + i > 6 || coords[1] + i > 6){
         break;
       } else if(typeof counters[coords[0] + i][coords[1] + i] !== 'undefined') {
         if(counters[coords[0] + i][coords[1] + i] == owner){
@@ -339,7 +369,7 @@ const GameCanvas = ()=>{
     let count = 1;
     // Check Up
     for(let i = 1; i < 7; i++){
-      if(coords[0] + i > 5 || coords[1] - i < 0){
+      if(coords[0] + i > 6 || coords[1] - i < 0){
         break;
       } else if(typeof counters[coords[0] + i][coords[1] - i] !== 'undefined') {
         if(counters[coords[0] + i][coords[1] - i] == owner){
@@ -351,7 +381,7 @@ const GameCanvas = ()=>{
     }
     // Check Down
     for(let i = 1; i < 7; i++){
-      if(coords[0] - i < 0 || coords[1] + i > 5){
+      if(coords[0] - i < 0 || coords[1] + i > 6){
         break;
       } else if(typeof counters[coords[0] - i][coords[1] + i] !== 'undefined') {
         if(counters[coords[0] - i][coords[1] + i] == owner){
