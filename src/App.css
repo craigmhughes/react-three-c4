@@ -182,14 +182,21 @@ canvas {
   left: calc(50% - 11.25em);
   transition: all .35s ease-in-out;
   width: 22.5em;
+  height: 7em;
+  overflow: hidden;
+}
+
+#singleplay-btn > img, #twoplayer-btn > img {
+  margin-top: -3em;
+  position: fixed;
 }
 
 #singleplay-btn {
-  top: calc(50% - 7em);
+  top: calc(50% - 3em);
 }
 
 #twoplayer-btn {
-  top: calc(50% - 1em);
+  top: calc(50% + 3em);
 }
 
 #singleplay-btn.hidden, #twoplayer-btn.hidden {

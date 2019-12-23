@@ -83,17 +83,21 @@ function Interface({setActive, active, setIsMoving, isMoving, placeCounter, moda
             <img src="assets/logo.svg" id="game-logo" className={gameState == 0 ? "menu" : ""}/>
             <img src={`assets/playerturn-${!active ? "one" : "two"}.svg`} id="turn-card" className={gameState == 0 ? "hidden" : ""}/>
 
-            <img src="assets/single-player.svg" id="singleplay-btn" onClick={()=>{
-                setGameState(1);
-                setIsSinglePlayer(true);
-                console.log("Single Player = " + isSinglePlayer);
-            }}  className={gameState > 0 ? "hidden" : ""}/>
-
-            <img src="assets/two-player.svg" id="twoplayer-btn" onClick={()=>{
-                setGameState(1);
-                setIsSinglePlayer(false);
-                console.log("Single Player = " + isSinglePlayer);
-            }}  className={gameState > 0 ? "hidden" : ""}/>
+            <div id="singleplay-btn" className={gameState > 0 ? "hidden" : ""}>
+                <img src="assets/single-player.svg" onClick={()=>{
+                    setGameState(1);
+                    setIsSinglePlayer(true);
+                    console.log("Single Player = " + isSinglePlayer);
+                }}  />
+            </div>
+            
+            <div id="twoplayer-btn" className={gameState > 0 ? "hidden" : ""}>
+                <img src="assets/two-player.svg" onClick={()=>{
+                    setGameState(1);
+                    setIsSinglePlayer(false);
+                    console.log("Single Player = " + isSinglePlayer);
+                }}  />
+            </div>
 
             <img src="assets/exit.svg" id="exit-game"  className={gameState == 0 ? "hidden" : ""} onClick={()=>{
                 setModal(!modal);
