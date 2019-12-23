@@ -179,16 +179,15 @@ canvas {
 #singleplay-btn, #twoplayer-btn {
   position: fixed;
   top: calc(50% - 7em);
-  left: calc(50% - 11.25em);
+  left: calc(50% - 10.5em);
   transition: all .35s ease-in-out;
-  width: 22.5em;
+  width: 20.5em;
   height: 7em;
   overflow: hidden;
 }
 
 #singleplay-btn > img, #twoplayer-btn > img {
   margin-top: -3em;
-  position: fixed;
 }
 
 #singleplay-btn {
