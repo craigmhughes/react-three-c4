@@ -107,6 +107,10 @@ const GameCanvas = ()=>{
       setCounters([
         [],[],[],[],[],[],[]
       ]);
+
+      setActive(false);
+      setPlayer(1);
+      setActiveCounter([activeCol,1]);
     }
 
     setGameState(i);

@@ -63,7 +63,7 @@ const ExitModal = ({modal, setModal, gameState, setGameState})=>{
         }}>
             <img src="assets/quit-modal.svg" id="exit-modal"/>
             <img src="assets/tick.svg" id="exit-confirm" onClick={()=>{
-                setGameState(0);
+                setGameState(0, true);
                 setModal(false);
             }}/>
             <img src="assets/exit-2.svg" id="exit-cancel"/>
