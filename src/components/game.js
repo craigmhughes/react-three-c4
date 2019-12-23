@@ -117,9 +117,9 @@ const GameCanvas = ()=>{
    * Confirm placement of counter & overwrite var.
    */
   function placeCounter(aiCounter){
-    console.log(active);
+    // console.log(active);
     if(typeof aiCounter !== 'undefined'){
-      console.log(aiCounter);
+      // console.log(aiCounter);
       counters[aiCounter[0]][counters[aiCounter[0]].length] = aiCounter[1];
       aiCounter.push(counters[aiCounter[0]].length - 1);
       checkWin(aiCounter);
@@ -129,8 +129,7 @@ const GameCanvas = ()=>{
       checkWin(activeCounter);
     }
 
-    setPlayer(player);
-
+    // Switch player if two player, otherwise ai_turn() will take care of it.
     if(!isSinglePlayer){
       setPlayer(player * -1);
       setActiveCounter([activeCol, player * -1]);
@@ -146,18 +145,45 @@ const GameCanvas = ()=>{
 
   }
 
+  /**
+   * Computer Player's turn
+   */
   function ai_turn(){
-      placeCounter([Math.floor(Math.random() * 6), -1]);   
-  }
+      let bestScore = -Infinity;
+      let bestMove;
 
+      for(let i = 0; i < 7; i++){
+        if(counters[i].length < 6){
+          console.log("checking win");
+          counters[i][counters[i].length] = 1;
+          let result = checkWin([i, 1, counters[i].length - 1], true);
+          counters[i].pop();
+
+          if(result === undefined || result === "tie"){
+            console.log("no win");
+            continue
+          } else if (result > bestScore){
+            console.log("overwriting win!");
+            bestMove = i;
+          }
+        }
+      }
+
+      if (bestMove == undefined){
+        bestMove = Math.floor(Math.random() * 7);
+      }
+
+      placeCounter([bestMove, -1]);   
+  }
 
   /**
    * Creates an array of possible win directions and if any are true,
    * sets game to state 2 (Win state).
    * 
-   * @param {*} counter = Last placed counter
+   * @param {Array} counter = Last placed counter [x-pos, owner, y-pos]
+   * @param {Boolean} justChecking = pass true to recieve prediction of winning move.
    */
-  function checkWin(counter){
+  function checkWin(counter, justChecking){
     // X and Y axis
     let coords = [counter[0], counter[2]];
     // Player who owns counter
@@ -171,14 +197,25 @@ const GameCanvas = ()=>{
       checkDiagonalRight(coords, owner)
     ];
 
+    let foundWin = false;
+
     // If any win, set game to state 2 (Win)
     for(let i = 0; i < checkWin.length; i++){
-      if(checkWin[i]){
+      if(checkWin[i] && justChecking){
+        // Return winning player
+        return owner;
+
+      } else if(checkWin[i]){
         setWinner(owner);
         console.log(winner);
         setGameState(2);
+        foundWin = true;
         break;
       }
+    }
+
+    if(!foundWin){
+      return "tie";
     }
 
   }
@@ -251,7 +288,8 @@ const GameCanvas = ()=>{
         }
       }
     }
-
+    console.log(counters[coords[0]]);
+    console.log(count >= 4);
     return count >= 4;
   }
 
