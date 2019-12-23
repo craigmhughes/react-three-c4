@@ -162,42 +162,18 @@ const GameCanvas = ()=>{
           let winResult = checkWin([i, -1, counters[i].length - 1], true);
           counters[i].pop();
 
+          // Assign move to win first (if available).
           if(winResult !== undefined && winResult !== "tie"){
-            console.log("overwriting win!");
             bestMove = i;
             break;
           }
 
+          // Assign counter-win move.
           if(defeatResult !== undefined && defeatResult !== "tie"){
-            console.log("overwriting win!");
             bestMove = i;
           }
         }
       }
-
-      // let closestWinIndex = Infinity;
-
-      // for(let i = 0; i < 7; i++){
-      //   let isMax = true;
-      //   let counterIndex = counters[i].length;
-      //   for(let j = 0; j < 2; j++){
-      //     if(counters[i].length < 6){
-      //       counters[i][counterIndex] = isMax ? 1 : -1;
-      //       let result = checkWin([i, isMax ? 1 : -1, counters[i].length - 1], true);      
-
-      //       if(result === undefined || result === "tie"){
-      //         continue
-      //       } else if (result < bestScore && j < closestWinIndex){
-      //         console.log("overwriting win!");
-      //         bestMove = i;
-      //         closestWinIndex = j;
-      //       }
-      //       isMax = !isMax;
-      //     }
-      //   }
-
-      //   counters[i].splice(counterIndex, 1);
-      // }
 
       if (bestMove == undefined){
         bestMove = Math.floor(Math.random() * 7);

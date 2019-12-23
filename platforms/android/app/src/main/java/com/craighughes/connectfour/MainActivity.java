@@ -17,7 +17,7 @@
        under the License.
  */
 
-package com.example.coreact;
+package com.craighughes.connectfour;
 
 import android.os.Bundle;
 import org.apache.cordova.*;

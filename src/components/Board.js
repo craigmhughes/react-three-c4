@@ -3,6 +3,7 @@ import { useFrame } from 'react-three-fiber';
 import { useSpring, a } from 'react-spring/three';
 
 import GameBoard from './3d/GameBoard';
+import BoardPointer from './3d/BoardPointer';
 import Counter from './Counter';
 import Clouds from './3d/Clouds';
 
@@ -44,6 +45,7 @@ const Board = ({active, setActive, isMoving, setIsMoving, counters, setCounter, 
         receiveShadow>
           {colElements}
           <GameBoard/>
+          <BoardPointer activeCol={activeCol}/>
           <Clouds active={active}/>
       </a.mesh>
     )

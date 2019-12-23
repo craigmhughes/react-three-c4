@@ -1,8 +1,8 @@
 {
-    "name": "com.example.coreact",
-    "displayName": "Coreact",
+    "name": "com.craighughes.connectfour",
+    "displayName": "Connect Four",
     "version": "1.0.0",
-    "description": "A sample Apache Cordova application that responds to the deviceready event.",
+    "description": "Connect Four with React Three & Cordova.",
     "main": "index.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1"
@@ -10,6 +10,6 @@
     "keywords": [
         "ecosystem:cordova"
     ],
-    "author": "Apache Cordova Team",
+    "author": "Craig Hughes",
     "license": "Apache-2.0"
 }
