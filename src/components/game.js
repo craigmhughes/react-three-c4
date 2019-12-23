@@ -217,6 +217,8 @@ const GameCanvas = ()=>{
         console.log(winner);
         setGameState(2);
         foundWin = true;
+        setActive(false);
+        setPlayer(1);
         break;
       }
     }
